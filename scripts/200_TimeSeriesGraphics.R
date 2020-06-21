@@ -1,5 +1,10 @@
 
+#### 2 TIME SERIES GRAPHICS ############################################################################################
+
 library(fpp3)
+
+
+#### 2.1. tsibble objects ##############################################################################################
 
 y <- tsibble(Year = 2015:2019, Observation = c(123,39,78,52,110), index = Year)
 
@@ -39,3 +44,23 @@ prison <- prison %>%
   mutate(quarter = yearquarter(date)) %>% 
   select(-date) %>% 
   as_tsibble(key = c('state', 'gender', 'legal', 'indigenous'), index = quarter)
+
+
+#### 2.2 TIME SERIES PLOTS #############################################################################################
+
+melsyd_economy <- ansett %>%
+  filter(Airports == "MEL-SYD", Class=="Economy")
+
+
+#### Basic Time Series Plot  -------------------------------------------------------------------------------------------
+
+melsyd_economy %>%
+  autoplot(Passengers) +
+  labs(title = "Ansett economy class passengers", subtitle = "Melbourne-Sydney") +
+  xlab("Year")
+
+load(file = 'data/a10.Rdata')
+
+a10 %>% autoplot(Cost) +
+  ggtitle("Antidiabetic drug sales") +
+  ylab("$ million") + xlab("Year")
