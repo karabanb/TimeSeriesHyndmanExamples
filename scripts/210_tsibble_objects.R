@@ -15,15 +15,18 @@ PBS
 
 PBS %>% 
   filter(ATC2=='A10') %>% 
-  select(Month, Concession, Type, Cost)
+  select(Month, Concession, Type, Cost) 
 
 
 ### Grouping data ### --------------------------------------------------------------------------------------------------
 
-PBS %>% 
+a10 <- PBS %>% 
   filter(ATC2=='A10') %>% 
   select(Month, Concession, Type, Cost) %>% 
-  summarise(TotalC = sum(Cost))
+  summarise(TotalC = sum(Cost)) %>% 
+  mutate(Cost = TotalC/1e6)
+
+save(a10, file = 'data/a10.Rdata')
 
 
 ### Read a csv file and convert to a tsibble ### -----------------------------------------------------------------------
