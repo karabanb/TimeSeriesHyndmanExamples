@@ -64,3 +64,54 @@ load(file = 'data/a10.Rdata')
 a10 %>% autoplot(Cost) +
   ggtitle("Antidiabetic drug sales") +
   ylab("$ million") + xlab("Year")
+
+
+#### Seasonal plots ----------------------------------------------------------------------------------------------------
+
+a10 %>% 
+  gg_season(Cost, labels = 'both') +
+  ylab('$ milion') +
+  ggtitle('Seasonal plot: antidiabetic drug sales')
+  
+
+#### Multiple Seasonal Periods -----------------------------------------------------------------------------------------
+
+vic_elec %>% 
+  gg_season(Demand, period = "day") + 
+  theme(legend.position = "none")
+
+vic_elec %>%
+  gg_season(Demand, period = "week") +
+  theme(legend.position = "none")
+
+vic_elec %>% 
+  gg_season(Demand, period = "year")
+
+
+#### Seasonal subseries plots ------------------------------------------------------------------------------------------
+
+a10 %>%
+  gg_subseries(Cost) +
+  ylab("$ million") +
+  xlab("Year") +
+  ggtitle("Seasonal subseries plot: antidiabetic drug sales")
+
+holidays <- tourism %>%
+  filter(Purpose == "Holiday") %>%
+  group_by(State) %>%
+  summarise(Trips = sum(Trips))
+
+holidays %>% 
+  autoplot(Trips) +
+  ylab("thousands of trips") + 
+  xlab("Year") +
+  ggtitle("Australian domestic holiday nights")
+
+holidays %>% gg_season(Trips) +
+  ylab("thousands of trips") +
+  ggtitle("Australian domestic holiday nights")
+
+
+
+
+
