@@ -2,7 +2,7 @@
 #### 2 TIME SERIES GRAPHICS ############################################################################################
 
 library(fpp3)
-
+library(GGally)
 
 #### 2.1. tsibble objects ##############################################################################################
 
@@ -96,6 +96,8 @@ a10 %>%
   xlab("Year") +
   ggtitle("Seasonal subseries plot: antidiabetic drug sales")
 
+# holidays example 
+
 holidays <- tourism %>%
   filter(Purpose == "Holiday") %>%
   group_by(State) %>%
@@ -111,7 +113,85 @@ holidays %>% gg_season(Trips) +
   ylab("thousands of trips") +
   ggtitle("Australian domestic holiday nights")
 
+holidays %>%
+  gg_subseries(Trips) + ylab("thousands of trips") +
+  ggtitle("Australian domestic holiday nights")
 
 
+#### Scatterplots ------------------------------------------------------------------------------------------------------
+
+vic_elec %>%
+  filter(year(Time) == 2014) %>%
+  autoplot(Demand) +
+  xlab("Year: 2014") + 
+  ylab(NULL) +
+  ggtitle("Half-hourly electricity demand: Victoria, Australia")
+
+vic_elec %>%
+  filter(year(Time) == 2014) %>%
+  autoplot(Temperature) +
+  xlab("Year: 2014") + 
+  ylab(NULL) +
+  ggtitle("Half-hourly temperatures: Melbourne, Australia")
+
+vic_elec %>%
+  filter(year(Time) == 2014) %>%
+  ggplot(aes(x = Temperature, y = Demand)) +
+  geom_point() +
+  ylab("Demand (GW)") + 
+  xlab("Temperature (Celsius)")
+
+
+visitors <- tourism %>%
+  group_by(State) %>%
+  summarise(Trips = sum(Trips))
+
+visitors %>%
+  ggplot(aes(x = Quarter, y = Trips)) +
+  geom_line() +
+  facet_grid(vars(State), scales = "free_y") +
+  ylab("Number of visitor nights each quarter (millions)")
+
+visitors %>%
+  spread(State, Trips) %>%
+  GGally::ggpairs(columns = 2:9)
+
+
+#### Lag plots ---------------------------------------------------------------------------------------------------------
+
+recent_production <- aus_production %>%
+  filter(year(Quarter) >= 1992)
+
+recent_production %>% 
+  gg_lag(Beer, geom="point")
+
+
+#### Autocorrelation ---------------------------------------------------------------------------------------------------
+
+recent_production %>% 
+  ACF(Beer, lag_max = 9)
+
+recent_production %>%
+  ACF(Beer) %>%
+  autoplot()
+
+a10 %>%
+  ACF(Cost, lag_max = 48) %>%
+  autoplot()
+
+
+#### White noise -------------------------------------------------------------------------------------------------------
+
+set.seed(30)
+
+y <- tsibble(sample = 1:50, wn = rnorm(50), index = sample)
+
+y %>%
+  autoplot(wn) + 
+  ggtitle("White noise")
+
+y %>% 
+  ACF(wn) %>%
+  autoplot()
 
 
