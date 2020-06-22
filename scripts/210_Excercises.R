@@ -96,4 +96,19 @@ tourism_state <- tourism %>%
 
 #### 4 #################################################################################################################
 
+aus_production %>%  autoplot(Bricks)
+
+pelt %>% autoplot(Lynx)
+
+gafa_stock %>% 
+  ggplot(aes(x = Date, y = Close, col = Symbol)) +
+  geom_line() +
+  facet_grid(Symbol~., scales = 'free_y') +
+  theme_bw()
+
+vic_elec %>% autoplot(Demand)
+
+
+
+
 
