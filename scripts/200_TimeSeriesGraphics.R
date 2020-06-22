@@ -34,7 +34,7 @@ a10 <- PBS %>%
 save(a10, file = 'data/a10.Rdata')
 
 
-### Read a csv file and convert to a tsibble ### -----------------------------------------------------------------------
+### Read a csv file and convert to a tsibble -----------------------------------------------------------------------
 
 prison <- readr::read_csv("https://OTexts.com/fpp3/extrafiles/prison_population.csv")
 
