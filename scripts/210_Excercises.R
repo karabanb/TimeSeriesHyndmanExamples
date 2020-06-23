@@ -109,6 +109,119 @@ gafa_stock %>%
 vic_elec %>% autoplot(Demand)
 
 
+#### 5 #################################################################################################################
+
+aus_arrivals
+
+aus_arrivals %>% autoplot(Arrivals) + theme_bw()
+
+aus_arrivals %>% gg_season(labels = 'both')
+
+aus_arrivals %>% gg_subseries()
+
+
+#### 6 #################################################################################################################
+
+set.seed(42)
+
+myseries <- aus_retail %>%
+  filter(`Series ID` == sample(aus_retail$`Series ID`,1))
+
+myseries %>% autoplot(Turnover)
+
+myseries %>% gg_season(Turnover,labels = 'both')
+
+myseries %>% gg_subseries(Turnover)
+
+myseries %>% gg_lag(Turnover, geom = 'point', lags = 1:12)
+
+myseries %>% ACF(Turnover) %>% autoplot()
+
+
+#### 7 #################################################################################################################
+
+#### US Employment -----------------------------------------------------------------------------------------------------
+
+us_employment
+
+total_private_emp <- us_employment %>% 
+  filter(Title == 'Total Private') 
+
+total_private_emp %>% autoplot(Employed)
+
+total_private_emp %>% gg_season(Employed, labels = 'both')
+
+total_private_emp %>% gg_subseries(Employed)
+
+total_private_emp %>% gg_lag(Employed, geom = 'point', lags = 1:12)
+
+total_private_emp %>% ACF(Employed) %>% autoplot()
+
+
+#### AUS Production ----------------------------------------------------------------------------------------------------
+
+aus_production
+
+aus_production %>% autoplot(Bricks)
+
+aus_production %>% gg_season(Bricks)
+
+aus_production %>% gg_subseries(Bricks)
+
+aus_production %>% gg_lag(Bricks, geom = 'point')
+
+aus_production %>% ACF(Bricks) %>% autoplot()
+
+
+#### Pelt --------------------------------------------------------------------------------------------------------------
+
+pelt
+
+pelt %>% autoplot(Hare)
+
+pelt %>% gg_season(Hare)
+
+pelt %>% gg_subseries(Hare)
+
+pelt %>% gg_lag(Hare, geom = 'point', lags = 1:16)
+
+pelt %>% ACF(Hare) %>% autoplot()
+
+####  PBS --------------------------------------------------------------------------------------------------------------
+
+PBS
+
+PBS_H02 <- PBS %>% 
+  filter(ATC2 == 'H02') %>% 
+  group_by(ATC2) %>% 
+  summarise(Cost = sum(Cost))
+
+PBS_H02 %>% autoplot(Cost)
+
+PBS_H02 %>% gg_season(Cost, labels = 'right')
+
+PBS_H02 %>% gg_subseries(Cost)
+
+PBS_H02 %>% gg_lag(Cost, geom = 'point', lags = 1:12)
+
+PBS_H02 %>% ACF(Cost) %>% autoplot()
+
+#### US gasoline -------------------------------------------------------------------------------------------------------
+
+us_gasoline
+
+us_gasoline %>% autoplot()
+
+us_gasoline %>% gg_season(Barrels)
+
+us_gasoline %>% 
+  gg_lag(Barrels, geom = 'point') + 
+  theme(legend.position = "none")
+
+us_gasoline %>% ACF(Barrels) %>% autoplot()
+
+
+
 
 
 
