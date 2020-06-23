@@ -221,6 +221,29 @@ us_gasoline %>%
 us_gasoline %>% ACF(Barrels) %>% autoplot()
 
 
+#### 9 #################################################################################################################
+
+aus_livestock
+
+aus_livestock_pigs <- aus_livestock %>% 
+  filter(Animal == 'Pigs', State == 'Victoria', year(Month) >= 1990, year(Month) <= 1995) 
+
+aus_livestock_pigs %>% autoplot(Count)
+
+aus_livestock_pigs %>% ACF(Count) %>% autoplot()
+
+
+#### 10 ################################################################################################################
+
+dgoog <- gafa_stock %>%
+  filter(Symbol == "GOOG", year(Date) >= 2018) %>%
+  mutate(trading_day = row_number()) %>%
+  update_tsibble(index = trading_day, regular = TRUE) %>%
+  mutate(diff = difference(Close))
+
+dgoog %>% autoplot(diff)
+
+dgoog %>% ACF(diff) %>% autoplot()
 
 
 
