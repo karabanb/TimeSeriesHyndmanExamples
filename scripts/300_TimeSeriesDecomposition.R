@@ -87,6 +87,18 @@ global_economy %>%
   xlab("Year") + ylab("% of GDP") +
   ggtitle("Total Australian exports")
 
+aus_exports <- global_economy %>%
+  filter(Country == "Australia") %>%
+  mutate(
+    `5-MA` = slide_dbl(Exports, mean, .size = 5, .align = "center")
+  )
+
+aus_exports %>%                                   # this example doesn't work due to changes in 
+  autoplot(Exports) +
+  autolayer(aus_exports, `5-MA`, color='red') +
+  xlab("Year") + ylab("Exports (% of GDP)") +
+  ggtitle("Total Australian exports") +
+  guides(colour=guide_legend(title="series"))
 
 
 
